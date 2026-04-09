@@ -17,6 +17,8 @@ use PHPUnit\Framework\Attributes\Test;
 
 class CmsmsClientTest extends TestCase
 {
+    protected static $latestResponse;
+
     private Client $guzzle;
     private CmsmsClient $client;
     private CmsmsMessage $message;
@@ -61,8 +63,8 @@ class CmsmsClientTest extends TestCase
     {
         $message = Mockery::mock(CmsmsMessage::create('Message body'));
         $message->shouldReceive('originator')
-                ->once()
-                ->with($this->app['config']['services.cmsms.originator']);
+            ->once()
+            ->with($this->app['config']['services.cmsms.originator']);
 
         $this->guzzle
             ->shouldReceive('request')
