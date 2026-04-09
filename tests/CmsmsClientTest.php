@@ -12,9 +12,15 @@ use NotificationChannels\Cmsms\Events\SMSSendingFailedEvent;
 use NotificationChannels\Cmsms\Events\SMSSentSuccessfullyEvent;
 use NotificationChannels\Cmsms\Exceptions\CouldNotSendNotification;
 use Orchestra\Testbench\TestCase;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Test;
 
 class CmsmsClientTest extends TestCase
 {
+    private Client $guzzle;
+    private CmsmsClient $client;
+    private CmsmsMessage $message;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -30,17 +36,15 @@ class CmsmsClientTest extends TestCase
         parent::tearDown();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated()
     {
         $this->assertInstanceOf(CmsmsClient::class, $this->client);
         $this->assertInstanceOf(CmsmsMessage::class, $this->message);
     }
 
-    /**
-     * @test
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function it_can_send_message()
     {
         $this->guzzle
@@ -51,10 +55,8 @@ class CmsmsClientTest extends TestCase
         $this->client->send($this->message, '00301234');
     }
 
-    /**
-     * @test
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function it_sets_a_default_originator_if_none_is_set()
     {
         $message = Mockery::mock(CmsmsMessage::create('Message body'));
@@ -70,7 +72,7 @@ class CmsmsClientTest extends TestCase
         $this->client->send($message, '00301234');
     }
 
-    /** @test */
+    #[Test]
     public function it_throws_exception_on_error_response()
     {
         $this->expectException(CouldNotSendNotification::class);
@@ -83,7 +85,7 @@ class CmsmsClientTest extends TestCase
         $this->client->send($this->message, '00301234');
     }
 
-    /** @test */
+    #[Test]
     public function it_includes_multipart_data()
     {
         $message = clone $this->message;
@@ -99,7 +101,7 @@ class CmsmsClientTest extends TestCase
         $this->assertEquals(6, $messageJsonObject->messages->msg[0]->maximumNumberOfMessageParts);
     }
 
-    /** @test */
+    #[Test]
     public function it_includes_reference_data()
     {
         $message = clone $this->message;
@@ -113,7 +115,7 @@ class CmsmsClientTest extends TestCase
         $this->assertEquals('ABC', $messageJsonObject->messages->msg[0]->reference);
     }
 
-    /** @test */
+    #[Test]
     public function it_includes_encoding_detection_type_data_in_body()
     {
         $message = clone $this->message;
@@ -128,7 +130,7 @@ class CmsmsClientTest extends TestCase
         $this->assertEquals('0', $messageJsonObject->messages->msg[0]->dcs);
     }
 
-    /** @test */
+    #[Test]
     public function it_includes_encoding_detection_type_data_in_message()
     {
         $message = clone $this->message;
@@ -142,7 +144,7 @@ class CmsmsClientTest extends TestCase
         $this->assertEquals('1', $messageJsonObject->messages->msg[0]->dcs);
     }
 
-    /** @test */
+    #[Test]
     public function it_dispatches_a_success_event()
     {
         Event::fake();
@@ -157,7 +159,7 @@ class CmsmsClientTest extends TestCase
         Event::assertDispatched(SMSSentSuccessfullyEvent::class);
     }
 
-    /** @test */
+    #[Test]
     public function it_dispatches_a_failure_event()
     {
         Event::fake();

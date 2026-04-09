@@ -9,10 +9,18 @@ use Mockery;
 use NotificationChannels\Cmsms\CmsmsChannel;
 use NotificationChannels\Cmsms\CmsmsClient;
 use NotificationChannels\Cmsms\CmsmsMessage;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class CmsmsChannelTest extends TestCase
 {
+    private TestNotification $notification;
+    private TestNotifiable $notifiable;
+    private Client $guzzle;
+    private CmsmsClient $client;
+    private CmsmsChannel $channel;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -30,17 +38,15 @@ class CmsmsChannelTest extends TestCase
         parent::tearDown();
     }
 
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated()
     {
         $this->assertInstanceOf(CmsmsClient::class, $this->client);
         $this->assertInstanceOf(CmsmsChannel::class, $this->channel);
     }
 
-    /**
-     * @test
-     * @doesNotPerformAssertions
-     */
+    #[Test]
+    #[DoesNotPerformAssertions]
     public function it_shares_message()
     {
         $this->client->shouldReceive('send')->once();

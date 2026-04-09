@@ -4,11 +4,12 @@ namespace NotificationChannels\Cmsms\Test;
 
 use NotificationChannels\Cmsms\CmsmsMessage;
 use NotificationChannels\Cmsms\Exceptions\InvalidMessage;
+use PHPUnit\Framework\Attributes\Test;
 use PHPUnit\Framework\TestCase;
 
 class CmsmsMessageTest extends TestCase
 {
-    /** @test */
+    #[Test]
     public function it_can_be_instantiated()
     {
         $message = CmsmsMessage::create();
@@ -16,7 +17,7 @@ class CmsmsMessageTest extends TestCase
         $this->assertInstanceOf(CmsmsMessage::class, $message);
     }
 
-    /** @test */
+    #[Test]
     public function it_can_accept_body_content_when_created()
     {
         $message = CmsmsMessage::create('Foo');
@@ -24,7 +25,7 @@ class CmsmsMessageTest extends TestCase
         $this->assertEquals('Foo', $message->getBody());
     }
 
-    /** @test */
+    #[Test]
     public function it_supports_create_method()
     {
         $message = CmsmsMessage::create('Foo');
@@ -33,7 +34,7 @@ class CmsmsMessageTest extends TestCase
         $this->assertEquals('Foo', $message->getBody());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_body()
     {
         $message = CmsmsMessage::create('Bar');
@@ -41,7 +42,7 @@ class CmsmsMessageTest extends TestCase
         $this->assertEquals('Bar', $message->getBody());
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_originator()
     {
         $message = CmsmsMessage::create()->originator('APPNAME');
@@ -49,7 +50,7 @@ class CmsmsMessageTest extends TestCase
         $this->assertEquals('APPNAME', $message->getOriginator());
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_set_an_empty_originator()
     {
         $this->expectException(InvalidMessage::class);
@@ -57,7 +58,7 @@ class CmsmsMessageTest extends TestCase
         CmsmsMessage::create()->originator('');
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_set_an_originator_thats_too_long()
     {
         $this->expectException(InvalidMessage::class);
@@ -65,7 +66,7 @@ class CmsmsMessageTest extends TestCase
         CmsmsMessage::create()->originator('0123456789ab');
     }
 
-    /** @test */
+    #[Test]
     public function it_can_set_reference()
     {
         $message = CmsmsMessage::create()->reference('REFERENCE123');
@@ -73,7 +74,7 @@ class CmsmsMessageTest extends TestCase
         $this->assertEquals('REFERENCE123', $message->getReference());
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_set_an_empty_reference()
     {
         $this->expectException(InvalidMessage::class);
@@ -81,7 +82,7 @@ class CmsmsMessageTest extends TestCase
         CmsmsMessage::create()->reference('');
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_set_a_reference_thats_too_long()
     {
         $this->expectException(InvalidMessage::class);
@@ -89,7 +90,7 @@ class CmsmsMessageTest extends TestCase
         CmsmsMessage::create()->reference('UmSM7h8I1nySJm0A8IqcU3LDswO7ojfJn');
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_set_a_reference_that_contains_non_alpha_numeric_values()
     {
         $this->expectException(InvalidMessage::class);
@@ -97,6 +98,7 @@ class CmsmsMessageTest extends TestCase
         CmsmsMessage::create()->reference('@#$*A*Sjks87');
     }
 
+    #[Test]
     public function it_can_set_multipart()
     {
         $message = CmsmsMessage::create()->multipart(1, 4);
@@ -105,6 +107,7 @@ class CmsmsMessageTest extends TestCase
         $this->assertEquals(4, $message->getMaximumNumberOfMessageParts());
     }
 
+    #[Test]
     public function it_cannot_set_more_than_8_parts_to_multipart()
     {
         $this->expectException(InvalidMessage::class);
@@ -112,7 +115,7 @@ class CmsmsMessageTest extends TestCase
         CmsmsMessage::create()->multipart(1, 9);
     }
 
-    /** @test */
+    #[Test]
     public function it_cannot_have_a_higher_minimum_than_maximum_for_multipart()
     {
         $this->expectException(InvalidMessage::class);
