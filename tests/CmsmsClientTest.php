@@ -17,7 +17,7 @@ use PHPUnit\Framework\Attributes\Test;
 
 class CmsmsClientTest extends TestCase
 {
-    protected static $latestResponse;
+    public static $latestResponse;
 
     private Client $guzzle;
     private CmsmsClient $client;

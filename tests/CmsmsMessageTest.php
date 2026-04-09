@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class CmsmsMessageTest extends TestCase
 {
-    protected static $latestResponse;
+    public static $latestResponse;
 
     #[Test]
     public function it_can_be_instantiated()

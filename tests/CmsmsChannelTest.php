@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 class CmsmsChannelTest extends TestCase
 {
-    protected static $latestResponse;
+    public static $latestResponse;
 
     private TestNotification $notification;
     private TestNotifiable $notifiable;
